@@ -37,8 +37,6 @@
 
 ![f2](images\f2.png)
 
-![f3](images\f3.png)
-
 #### Multi-Path Refinement
 
 ​	在我们标准的多路结构中，我们将预训练的ResNet分为四个block，使用4个级联的RefineNet 单元结构，每个单元都直接连接ResNet block的输出以及前一个RefineNet block。注意到，这种设计不是唯一的。如，一个RefineNet block可以接受多个ResNet block的输入。我们分析 2级联的版本，单block方法以及一个2尺度7路结构。
@@ -50,6 +48,8 @@
 #### RefineNet
 
 ​	RefineNet block如图3（a）所示。
+
+![f3](images\f3.png)
 
 **Residual convolution unit** 每个RefineNet block前面包含一些调整卷积，来fine-tune预训练ResNet。每个输入路径都经过两个残差卷积单元（RCU）。
 
