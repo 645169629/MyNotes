@@ -1,15 +1,5 @@
 ### <center>Faster R-CNN:Towards Real-Time Object Detection with Region Proposal Networks<center>
 
-<center>$Shaoqing\ Ren^1$,$Kaiming\ He^2$,$Ross\ Girshick^3$,$Jian\ Sun^4$</center>
-
-> [1] Shaoqing Ren:
->
-> [2] Kaiming He:
->
-> [3] Ross Girshick:
->
-> [4] Jian Sun:
-
 #### 摘要：
 
 目前最好的目标检测网络依赖于区域提案算法来假定目标的位置。如SPPnet和Fast R-CNN等进展减少了这些检测网络的运行时间，使得区域提案计算成为瓶颈。本文中，我们提出一种区域提案网络（$Region\ Proposal\ Network$,RPN），该网络与检测网络共享整幅图像的卷积特征，因次使得区域提案几乎不花费代价。RPN是一个全卷积网络，可以同时的预测目标边界和每个位置的目标分数。RPN通过端到端训练来生成高质量区域提案，可用作Fast R-CNN检测。通过简单的交替优化，RPN和Fast R-CNN可以被训练而共享卷积特征。我们接着通过共享卷积特征将RPN和Fast R-CNN合并到一个单一网络——使用最近流行的具有“attention”机制的神经网络术语，RPN组件会告诉统一的网络去哪里寻找。对于深度VGG-16模型，我们的检测系统在GPU上有5fps的帧率(包括所有步骤)，并在PASCAL VOC 2007 和2012以及MS COCO数据集上达到了目前最好的目标检测准确度（每张图使用300个提案）。在ILSVRC和COCO 2015竞赛中，Faster R-CNN和RPN是多项冠军的基础。代码已经公开可用。
