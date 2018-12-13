@@ -44,9 +44,9 @@
 
 ​	特别的，我们使用FCN为每个RoI预测一个$\ m\times m\ $的mask。这使得mask分支的每一层都保持$\ m\times m\ $的目标空间布局，而不需要将其压缩成向量表示而减少空间维度。
 
-​	这种像素到像素的方法需要我们的RoI特征需要很好的对齐，以保证逐像素空间响应。
+​	这种像素到像素的方法需要我们的RoI特征很好的对齐，以保证逐像素空间响应。
 
-**RoIAlign: ** RoIPool用于从每个RoI提取一个小特征（如7x7）。RoIPool首先将floating数值RoI量化到特征图的离散粒度，记着细分为空间bins，最后聚合（max pooling）每个bin覆盖的特征值。量化是，在一个连续坐标$\ x\ $上计算$\ [x/16]\ $，其中16是特征图stride，[·]是取整；同样的，在分成bins时（如7x7）也执行了量化。这些量化会引入RoI与提取特征的不对齐，虽然不会影响分类，但是会影响像素级别的mask。
+**RoIAlign: ** RoIPool用于从每个RoI提取一个小特征（如7x7）。RoIPool首先将floating数值RoI量化到特征图的离散粒度，接着细分为空间bins，最后聚合（max pooling）每个bin覆盖的特征值。量化是，在一个连续坐标$\ x\ $上计算$\ [x/16]\ $，其中16是特征图stride，[·]是取整；同样的，在分成bins时（如7x7）也执行了量化。这些量化会引入RoI与提取特征的不对齐，虽然不会影响分类，但是会影响像素级别的mask。
 
 ​	我们提出RoIAlign层来解决该问题，移除了RoIPool严格的量化，适当的对于输入和提取特征。我们提出的改变很简单：我们避免RoI或bins边界的量化（即，使用x/16而不是[x/16]）。使用双线性插值来计算每个RoI bin四个采样位置的输入特征，并集成结果（max 或 average）。
 
@@ -62,7 +62,7 @@
 
 **Training: **与Fast R-CNN一样，与gt IoU大于0.5的为pos，否则为neg。$\ L_{mask}\ $只在pos RoI上定义。
 
-​	图像resize到800。每个mini-batch，每个GPU包含2张图，每张图包含N个采用RoI，pos:neg = 1:3。C4backbone N = 64，FPN N=512。8个GPU，160K迭代，lr=0.02，在120K次迭代减小十倍。weight decay 0.0001，momentum 0.9。
+​	图像resize到800。每个mini-batch，每个GPU包含2张图，每张图包含N个采样RoI，pos:neg = 1:3。C4backbone N = 64，FPN N=512。8个GPU，160K迭代，lr=0.02，在120K次迭代减小十倍。weight decay 0.0001，momentum 0.9。
 
 ​	RPN anchors 包括5个尺度，3个比例。RPN单独训练，不与Mask R-CNN共享特征。RPN和Mask R-CNN backbone一样，可共享。
 
