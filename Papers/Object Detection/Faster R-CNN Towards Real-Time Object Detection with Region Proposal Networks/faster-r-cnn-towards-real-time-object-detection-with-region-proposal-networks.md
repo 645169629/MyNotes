@@ -81,7 +81,7 @@ L(\{p_i\},\{t_i\}) &= \frac{1}{N_{cls}}\sum_iL_{cls}(p_i,p_i^*)\\
 $$
 其中，i表示mini-batch中 anchor 的index。$p_i$为anchor i为目标的概率。gt$\ p^*_i\ $为1或0。$\ t_i\ $是预测的4个坐标的向量，$\ t^*_i\ $与pos anchor相关联的gt的坐标。分类损失$\ L_{cls}\ $是在两个类上的log损失。对于回归损失，我们使用$\ L_{reg}(t_i,t^*_i)=R(t_i-t^*_i)\ $，其中，R为鲁棒损失函数（smooth L1）。$\ p^*_iL_{reg}\ $表示回归损失只对pos anchor有作用。cls和reg层的输出分别包含$\ \{p_i\}\ $和$\ \{t_i\}\ $。
 
-​	这两项由$\ N_{cls}\ $和$\ N_{reg}\ $正则化，由平衡参数$\ \lambda\ $加权。在最新的实现中，$\ cls\ $使用mini-batch归一化，$reg$使用anchor位置数量归一化。默认$\ \lambda=10\ $，因此两项损失大致同等重要。
+​	这两项由$\ N_{cls}\ $和$\ N_{reg}\ $正则化，由平衡参数$\ \lambda\ $加权。在最新的实现中，$\ cls\ $使用mini-batch-size归一化，$reg$使用anchor位置数量归一化。默认$\ \lambda=10\ $，因此两项损失大致同等重要。
 
 ​	对于bb 回归：
 $$
