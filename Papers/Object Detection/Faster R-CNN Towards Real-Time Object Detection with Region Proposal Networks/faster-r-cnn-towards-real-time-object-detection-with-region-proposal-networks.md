@@ -118,7 +118,7 @@ $$
 
 ![t1](images\t1.png)
 
-​	re-scale图像，短边为600像素。ZF和VGG stride为16像素。对于anchor，我们使用三个尺度$128^2$、$256^2$、$512^2$，三个比例，1:1、1:2、2:1。图3展示了我们方法在多尺度上的能力。表1展示了使用ZFnet，每个anchor平均proposal大小。在训练时忽略跨越边界的anchor。对于1000x600的图像，大约2000（60x40x9）个anchor。忽略边界的，大约6000个anchor用于训练。在测试时，我们剪切边界proposal到图像边界。基于cls得分，使用NMS，阈值为0.7。每幅图大约剩下2000个proposal。NMS之后，使用最高得分的N个proposal区域用于检测。使用2000个RPN proposal来训练Fast R-CNN。
+​	re-scale图像，短边为600像素。ZF和VGG stride为16像素。对于anchor，我们使用三个尺度$128^2$、$256^2$、$512^2$，三个比例，1:1、1:2、2:1。图3展示了我们方法在多尺度上的能力。表1展示了使用ZFnet，每个anchor平均proposal大小。在训练时忽略跨越边界的anchor。对于1000x600的图像，大约20000（60x40x9）个anchor。忽略边界的，大约6000个anchor用于训练。在测试时，我们剪切边界proposal到图像边界。基于cls得分，使用NMS，阈值为0.7。每幅图大约剩下2000个proposal。NMS之后，使用最高得分的N个proposal区域用于检测。使用2000个RPN proposal来训练Fast R-CNN。
 
 ### Experiments
 
