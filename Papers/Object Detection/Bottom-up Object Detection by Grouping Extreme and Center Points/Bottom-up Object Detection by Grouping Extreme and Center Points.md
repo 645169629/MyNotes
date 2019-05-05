@@ -10,7 +10,7 @@
 
 ​	Top-down方法主导 了目标检测很多年。流行的检测器将目标检测问题转换为矩形区域分类问题，要么是明确的裁剪区域或区域特征（两阶段方法）或隐式的设置固定大小的anchors来代理区域（一阶段方法）。但是top-down检测不是没有限制。矩形bounding box不是自然的目标表示。许多物体不是轴平行的box，将它们放入一个box中会引入大量的背景像素。此外，top-down方法穷举大量的box位置而没有真正理解视觉语法的组成，这样计算开销很大。最后，box是不好的物体表示，他们传达了很少的物体细节信息。
 
-​	本文中，我们提出一个bottom-up检测框架，ExtremeNet。我们使用sota 关键点估计框架来寻找extreme点，通过预测每个物体类别的四个多峰heatmap。此外，我们每个类别使用一个heatmap来预测物体center。我们使用几何的方法将extreme points分组成物体。只有四个点的几何中心在中心heatmap中以高于预定义阈值的值被预测时，才group 四个extreme 点。我们迭代所有$\ O(n^2)\ $个extreme point 预测组合，并选择可用的。因为预测点$\ n\ $很小，对于COCO $\ n\le40\ $，所以暴力算法已经足够。
+​	本文中，我们提出一个bottom-up检测框架，ExtremeNet。我们使用sota 关键点估计框架来寻找extreme点，通过预测每个物体类别的四个多峰heatmap。此外，我们每个类别使用一个heatmap来预测物体center。我们使用几何的方法将extreme points分组成物体。只有四个点的几何中心在中心heatmap中以高于预定义阈值的值被预测时，才group 四个extreme 点。我们迭代所有$\ O(n^4)\ $个extreme point 预测组合，并选择可用的。因为预测点$\ n\ $很小，对于COCO $\ n\le40\ $，所以暴力算法已经足够。
 
 ​	我们不是第一个使用关键点来目标检测的。CornerNet预测bounding box的两个相对的角，使用关联嵌入性特征来group corner点。我们的方法与其有两个方面不同：关键点定义和分组。corner常常在物体之外，而没有很强的外观特征。而Extreme points，在物体上，具有一致的局部外观特征。第二个不同是CornerNet是几何分组。我们的检测框架是完全基于外观，没有隐式特征学习的。
 

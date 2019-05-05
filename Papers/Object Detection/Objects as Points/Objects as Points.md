@@ -32,9 +32,9 @@
 
 ### Preliminary
 
-​	设$\ I\in R^{W\times H\times 3}\ $为输入图像。我们的目标是产生关键点heatmap $\ \hat{Y}\in [0,1]^{\frac{W}{R}\times\frac{H}{R}\times C}\ $，其中$\ R\ $是输出stride，$\ C\ $是关键点type的数量。姿态检测中$\ C=17\ $，目标检测中$\ C=80\ $（类别数）。$\ R=4\ $。$\ \hat{Y}_{x,y,c}=1\ $表示检测的关键点，$\ \hat{Y}_{x,y,c}=1\ $表示背景。我们使用了不同的FCN encoder-decoder网络来预测$\ \hat{Y}\ $：hourglass network，up-convolutional ResNet，DLA。
+​	设$\ I\in R^{W\times H\times 3}\ $为输入图像。我们的目标是产生关键点heatmap $\ \hat{Y}\in [0,1]^{\frac{W}{R}\times\frac{H}{R}\times C}\ $，其中$\ R\ $是输出stride，$\ C\ $是关键点type的数量。姿态检测中$\ C=17\ $，目标检测中$\ C=80\ $（类别数）。$\ R=4\ $。$\ \hat{Y}_{x,y,c}=1\ $表示检测的关键点，$\ \hat{Y}_{x,y,c}=0\ $表示背景。我们使用了不同的FCN encoder-decoder网络来预测$\ \hat{Y}\ $：hourglass network，up-convolutional ResNet，DLA。
 
-​	对于每个类别$\ c\ $的关键点$\ p\in R^2\ $，我们计算其低分辨率等效$\ \widetilde{p}=\lfloor\frac{p}{R}\rfloor\ $。然后我们使用一个高斯核$\ Y_{xyc}=\mathrm{exp}(-\frac{(x-\widetilde{p}_x)^2+(y-\widetilde{p}_y)^2}{2\sigma^2_p})\ $将所有ground truth关键点分布到一个heatmap $\ Y\in[0,1]^{\frac{W}{R}\times\frac{H}{R}\times C}\ $，其中$\ \sigma_p\ $是目标大小自适应标准差。如果两个高斯有相同的类别overlap，我们取element-wise maximum。训练目标penalty-reduced逐像素逻辑回归加上focal loss：
+​	对于每个类别$\ c\ $的关键点$\ p\in R^2\ $，我们计算其低分辨率等效$\ \widetilde{p}=\lfloor\frac{p}{R}\rfloor\ $。然后我们使用一个高斯核$\ Y_{xyc}=\mathrm{exp}(-\frac{(x-\widetilde{p}_x)^2+(y-\widetilde{p}_y)^2}{2\sigma^2_p})\ $将所有ground truth关键点分布到一个heatmap $\ Y\in[0,1]^{\frac{W}{R}\times\frac{H}{R}\times C}\ $，其中$\ \sigma_p\ $是目标大小自适应标准差。如果同一类的两个高斯重叠，我们取element-wise maximum。训练目标penalty-reduced逐像素逻辑回归加上focal loss：
 $$
 L_k = \frac{1}{N}\sum_{xyc}
 \left\{
